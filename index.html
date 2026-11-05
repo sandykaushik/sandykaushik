@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sandeep Kumar, ServiceNow Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: the page reads like a ServiceNow record. A record-form hero, then related lists for experience, skills and credentials. */
+:root {
+  --paper: #f5f8f8;
+  --surface: #ffffff;
+  --ink: #032d42;
+  --muted: #4b6572;
+  --line: #d5e0e4;
+  --accent: #1d8448;
+  --accent-soft: #e7f7e3;
+  --deep: #032d42;
+  --wasabi: #62d84e;
+  --on-deep: #ffffff;
+  --on-deep-muted: #b9ccd4;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #021e2c; --surface: #06354d; --ink: #e8f1f4; --muted: #a6bcc5;
+    --line: #12475f; --accent: #62d84e; --accent-soft: #0b3d3a; --deep: #011621;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #021e2c; --surface: #06354d; --ink: #e8f1f4; --muted: #a6bcc5;
+  --line: #12475f; --accent: #62d84e; --accent-soft: #0b3d3a; --deep: #011621;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
+body { margin: 0; overflow-x: clip; background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.1; text-wrap: balance; margin: 0; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.mono { font-family: var(--mono); }
+
+/* Nav */
+nav { position: sticky; top: 0; z-index: 10; background: var(--deep); border-bottom: 1px solid rgba(255,255,255,.08); }
+nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 60px; }
+.brand { font-family: var(--display); font-weight: 800; font-size: 20px; color: var(--on-deep); text-decoration: none; letter-spacing: -0.01em; }
+.brand span { color: var(--wasabi); }
+.navlinks { display: flex; gap: 22px; }
+.navlinks a { color: var(--on-deep-muted); text-decoration: none; font-size: 15px; font-weight: 500; }
+.navlinks a:hover { color: var(--wasabi); }
+@media (max-width: 760px) { .navlinks { display: none; } }
+
+/* Hero */
+.hero { position: relative; isolation: isolate; color: var(--on-deep); padding: 64px 0 72px; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items: center; }
+.hero::before { content: ""; position: absolute; inset: 0 -100vmax; background: radial-gradient(ellipse 60% 70% at 80% 30%, rgba(98,216,78,.16), transparent 70%), var(--deep); z-index: -1; }
+@media (max-width: 900px) { .hero { grid-template-columns: 1fr; padding-top: 40px; } }
+.eyebrow { font-family: var(--mono); font-size: 13px; color: var(--wasabi); letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 8px; }
+.eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--wasabi); box-shadow: 0 0 0 4px rgba(98,216,78,.25); }
+.hero h1 { font-size: clamp(44px, 7vw, 84px); font-weight: 800; letter-spacing: -0.035em; margin: 18px 0 14px; }
+.hero h1 em { font-style: normal; color: var(--wasabi); }
+.hero .role { font-size: 20px; font-weight: 500; color: var(--on-deep); margin: 0 0 16px; }
+.hero p.lead { color: var(--on-deep-muted); max-width: 60ch; margin: 0 0 28px; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 15px; text-decoration: none; border: 1px solid var(--line); color: var(--ink); background: var(--surface); cursor: pointer; font-family: var(--body); }
+.btn.primary { background: var(--wasabi); border-color: var(--wasabi); color: #032d42; }
+.hero .btn:not(.primary) { background: transparent; color: var(--on-deep); border-color: rgba(255,255,255,.35); }
+.btn:hover { transform: translateY(-1px); }
+.btn { transition: transform .15s ease; }
+
+/* Portrait + record */
+.hero-side { display: flex; flex-direction: column; align-items: center; gap: 28px; }
+.portrait { margin: 0; width: min(300px, 70vw); aspect-ratio: 1 / 1; border-radius: 50%; overflow: hidden; border: 4px solid var(--wasabi); box-shadow: 0 0 0 10px rgba(98,216,78,.15), 0 24px 50px -20px rgba(0,0,0,.6); background: var(--deep); }
+.portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+.hero-side .record { width: 100%; color: var(--ink); }
+
+/* Record card */
+.record { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: 0 18px 40px -24px rgba(18,35,43,.35); }
+.record-head { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; border-bottom: 1px solid var(--line); background: var(--accent-soft); font-family: var(--body); font-size: 14px; }
+.record-head b { color: var(--ink); font-weight: 600; }
+.record-head .pill { background: var(--wasabi); color: #032d42; font-weight: 600; padding: 2px 10px; border-radius: 999px; font-size: 12px; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.field { padding: 12px 18px; border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); }
+.field:nth-child(2n) { border-right: none; }
+.field.full { grid-column: 1 / -1; border-right: none; }
+.field label { display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.field div { font-weight: 500; font-size: 15px; }
+.field .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.tag { font-family: var(--mono); font-size: 12px; padding: 3px 8px; border-radius: 5px; border: 1px solid var(--line); background: var(--paper); }
+.tag.hot { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 500; }
+.record-foot { padding: 12px 18px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.field { animation: fieldIn .5s ease both; }
+.field:nth-child(1){animation-delay:.05s}.field:nth-child(2){animation-delay:.1s}.field:nth-child(3){animation-delay:.15s}.field:nth-child(4){animation-delay:.2s}.field:nth-child(5){animation-delay:.25s}.field:nth-child(6){animation-delay:.3s}
+@keyframes fieldIn { from { opacity: .35; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+/* Stats */
+.stats { margin-top: 0; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.stat { padding: 26px 20px; border-right: 1px solid var(--line); }
+.stat:last-child { border-right: none; }
+.stat strong { display: block; font-family: var(--display); font-size: 40px; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); font-size: 14px; }
+@media (max-width: 760px) { .stats { grid-template-columns: 1fr 1fr; } .stat:nth-child(2) { border-right: none; } .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); } }
+
+/* Sections */
+section { padding: 80px 0 0; }
+.sec-head { display: flex; flex-direction: column; gap: 10px; margin-bottom: 36px; max-width: 720px; }
+.sec-head .table { font-family: var(--mono); font-size: 13px; color: var(--accent); text-transform: uppercase; letter-spacing: .08em; }
+.sec-head h2 { font-size: clamp(30px, 4vw, 44px); font-weight: 700; letter-spacing: -0.02em; }
+.sec-head p { color: var(--muted); margin: 0; max-width: 62ch; }
+
+/* Modules grid */
+.modules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 900px) { .modules { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .modules { grid-template-columns: 1fr; } }
+.mod { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px; display: flex; flex-direction: column; gap: 8px; }
+.mod .code { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+.mod h3 { font-size: 20px; font-weight: 700; }
+.modules .mod .code { font-family: var(--display); font-size: 40px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; color: var(--accent); }
+.modules .mod h3 { font-size: 17px; font-weight: 600; color: var(--ink); }
+.mod p { margin: 0; color: var(--muted); font-size: 15px; }
+
+/* Portal feature */
+.portal { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 40px; }
+@media (max-width: 900px) { .portal { grid-template-columns: 1fr; padding: 28px 22px; } }
+.portal ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.portal li { padding-left: 22px; position: relative; color: var(--ink); }
+.portal li::before { content: ""; position: absolute; left: 0; top: .62em; width: 10px; height: 2px; background: var(--accent); }
+.mock { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--paper); font-size: 13px; }
+.mock-bar { background: var(--deep); color: var(--on-deep); padding: 10px 14px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; }
+.mock-search { margin: 14px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--muted); font-family: var(--mono); font-size: 12px; }
+.mock-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 14px 14px; }
+.mock-tile { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 10px; }
+.mock-tile b { display: block; font-size: 13px; margin-bottom: 2px; }
+.mock-tile span { color: var(--muted); font-family: var(--mono); font-size: 11px; }
+
+/* Experience */
+.timeline { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.job { display: grid; grid-template-columns: 220px 1fr; gap: 32px; padding: 32px 0; border-bottom: 1px solid var(--line); }
+@media (max-width: 760px) { .job { grid-template-columns: 1fr; gap: 10px; } }
+.job .when { font-family: var(--mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.job .when b { display: block; color: var(--ink); font-family: var(--body); font-size: 15px; font-weight: 600; margin-top: 4px; }
+.job h3 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+.job .co { color: var(--accent); font-weight: 600; margin-bottom: 14px; }
+.job ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; color: var(--muted); }
+.job ul li::marker { color: var(--accent); }
+.job .stack { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+details.more { margin-top: 12px; }
+details.more summary { cursor: pointer; color: var(--accent); font-weight: 600; font-size: 15px; }
+details.more ul { margin-top: 12px; }
+
+/* Skills */
+.skills { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; border-top: 1px solid var(--line); }
+@media (max-width: 760px) { .skills { grid-template-columns: 1fr; } }
+.skill { display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+.skills .skill:nth-child(odd) { padding-right: 28px; }
+.skill .n { font-family: var(--mono); color: var(--accent); font-size: 13px; padding-top: 3px; }
+.skill h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.skill .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* Certs */
+.certs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 900px) { .certs { grid-template-columns: 1fr; } }
+.cert { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--wasabi); border-radius: 10px; padding: 24px; }
+.cert .abbr { font-family: var(--display); font-size: 34px; font-weight: 800; letter-spacing: -0.02em; }
+.cert .full { color: var(--muted); margin: 4px 0 14px; }
+.cert .ok { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+
+/* Education */
+.edu { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 760px) { .edu { grid-template-columns: 1fr; } }
+.edu .mod h3 { font-size: 19px; }
+
+/* Contact */
+.contact { margin: 80px 0 0; background: var(--deep); color: var(--on-deep); border-radius: 16px; padding: 48px; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; }
+@media (max-width: 900px) { .contact { grid-template-columns: 1fr; padding: 32px 22px; } }
+.contact h2 { font-size: clamp(32px, 4.5vw, 52px); font-weight: 800; letter-spacing: -0.025em; }
+.contact p { color: var(--on-deep-muted); max-width: 50ch; }
+.contact h2 { color: var(--on-deep); }
+.cards { display: grid; gap: 12px; }
+.cline { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; border: 1px solid rgba(255,255,255,.18); border-radius: 10px; }
+.cline label { display: block; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; opacity: .7; }
+.cline a, .cline span.v { color: var(--on-deep); text-decoration: none; font-weight: 500; word-break: break-all; }
+.copy { background: var(--wasabi); color: #032d42; font-weight: 500; border: 1px solid var(--wasabi); border-radius: 6px; padding: 6px 10px; font-family: var(--mono); font-size: 12px; cursor: pointer; white-space: nowrap; }
+.copy:hover { filter: brightness(1.08); }
+
+footer { padding: 32px 0 48px; color: var(--muted); font-size: 14px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+</style>
+</head>
+<body>
+
+<nav aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="#top">Sandeep<span>.</span>Kumar</a>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#portal">Portal</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#certifications">Certifications</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap" id="top">
+
+  <header class="hero">
+    <div>
+      <span class="eyebrow">Open to ServiceNow roles and consulting in Canberra</span>
+      <h1>Sandeep <em>Kumar</em></h1>
+      <p class="role">Senior ServiceNow Developer and Consultant · CSA · CAD · CIS-ITSM</p>
+      <p class="lead">I've spent 10+ years building enterprise software, and the last six of them deep inside ServiceNow. HRSD, CSM, ITSM, Service Catalog and Service Portal are where I do most of my work: case routing, SLAs, Flow Designer automation, security and the portal experience your users actually see.</p>
+      <div class="ctas">
+        <a class="btn primary" href="#contact">Get in touch</a>
+        <a class="btn" href="#experience">See my experience</a>
+      </div>
+    </div>
+
+    <div class="hero-side">
+    <figure class="portrait"><img src="sandeep.jpg" alt="Portrait of Sandeep Kumar" width="720" height="720"></figure>
+    <aside class="record" aria-label="Profile summary">
+      <div class="record-head"><b>Sandeep Kumar</b><span class="pill">Available</span></div>
+      <div class="fields">
+        <div class="field"><label>Role</label><div>Senior Developer</div></div>
+        <div class="field"><label>Location</label><div>Canberra, ACT</div></div>
+        <div class="field"><label>Experience</label><div>10+ years</div></div>
+        <div class="field"><label>Last employer</label><div>Optum (UHG)</div></div>
+        <div class="field full"><label>Modules</label>
+          <div class="tags"><span class="tag">ITSM</span><span class="tag">HRSD</span><span class="tag">CSM</span><span class="tag hot">Service Portal</span><span class="tag">ITOM</span><span class="tag">ITAM</span></div>
+        </div>
+        <div class="field full"><label>Certifications</label>
+          <div class="tags"><span class="tag">CSA</span><span class="tag">CAD</span><span class="tag">CIS-ITSM</span></div>
+        </div>
+      </div>
+      <div class="record-foot">Updated Nov 2026 · Master of IT &amp; Systems (AI/ML), University of Canberra</div>
+    </aside>
+    </div>
+  </header>
+
+  <div class="stats" role="list">
+    <div class="stat" role="listitem"><strong>10+</strong><span>years in software delivery</span></div>
+    <div class="stat" role="listitem"><strong>5</strong><span>ServiceNow products delivered</span></div>
+    <div class="stat" role="listitem"><strong>3</strong><span>ServiceNow certifications</span></div>
+    <div class="stat" role="listitem"><strong>$25K</strong><span>yearly savings from in-house BI tools</span></div>
+  </div>
+
+  <section id="about">
+    <div class="sec-head">
+      <span class="table mono">About</span>
+      <h2>ServiceNow work that holds up after go-live</h2>
+      <p>I like turning messy requirements into clean, scalable configuration. That usually means sitting with stakeholders, writing the spec, building it properly with the right mix of scripts and low-code, then carrying it through UAT and handover. I've also mentored and onboarded new developers along the way.</p>
+    </div>
+    <div class="modules">
+      <div class="mod"><span class="code">HRSD</span><h3>HR Service Delivery</h3><p>Case management, routing, assignment rules, SLAs, HR Criteria and Agent Workspace.</p></div>
+      <div class="mod"><span class="code">CSM</span><h3>Customer Service</h3><p>End-to-end case types, routing, escalations and lifecycle automation that cut turnaround time.</p></div>
+      <div class="mod"><span class="code">ITSM</span><h3>Catalog &amp; Requests</h3><p>Catalog Items, Record Producers, Order Guides, variable sets and execution plans.</p></div>
+      <div class="mod"><span class="code">SP</span><h3>Service Portal</h3><p>Portal pages, widgets and catalog experiences that make self-service easy for end users.</p></div>
+      <div class="mod"><span class="code">ITOM</span><h3>Discovery &amp; Mapping</h3><p>Discovery and Service Mapping for a dependency-aware CMDB across hybrid environments.</p></div>
+      <div class="mod"><span class="code">ITAM</span><h3>Asset Management</h3><p>Hardware and software asset lifecycles, with licence reconciliation for audit readiness.</p></div>
+    </div>
+  </section>
+
+  <section id="portal">
+    <div class="portal">
+      <div>
+        <div class="sec-head" style="margin-bottom:20px">
+          <span class="table mono">Service Portal</span>
+          <h2>Service Portal, built for the people using it</h2>
+          <p>A catalog is only as good as the portal it lives in. I've worked on ServiceNow Service Portal alongside my catalog builds, so requests are simple to find, quick to fill in and hard to get wrong.</p>
+        </div>
+        <ul>
+          <li>Configured Service Portal pages and customised widgets to surface catalog items, record producers and request tracking</li>
+          <li>Built dynamic portal forms with variable sets, UI Policies, Catalog Client Scripts and reference qualifiers</li>
+          <li>Reused variable sets across catalog items to keep the portal consistent and speed up new builds</li>
+          <li>Front-end background in AngularJS, JavaScript and responsive design, which carries straight into widget work</li>
+        </ul>
+      </div>
+      <div class="mock" aria-hidden="true">
+        <div class="mock-bar"><span>Service Portal</span><span>My requests (3)</span></div>
+        <div class="mock-search">Search catalog: "new laptop"</div>
+        <div class="mock-tiles">
+          <div class="mock-tile"><b>Hardware</b><span>12 items</span></div>
+          <div class="mock-tile"><b>HR Cases</b><span>8 items</span></div>
+          <div class="mock-tile"><b>Access</b><span>6 items</span></div>
+          <div class="mock-tile"><b>Software</b><span>15 items</span></div>
+          <div class="mock-tile"><b>Onboarding</b><span>Order guide</span></div>
+          <div class="mock-tile"><b>Support</b><span>Report issue</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="sec-head">
+      <span class="table mono">Experience</span>
+      <h2>Where I've done the work</h2>
+    </div>
+    <div class="timeline">
+
+      <article class="job">
+        <div class="when">12/2018 to 01/2025<b>Gurugram, India</b></div>
+        <div>
+          <h3>Assoc. Software Engineering Manager &amp; ServiceNow Consultant</h3>
+          <div class="co">Optum, UnitedHealth Group</div>
+          <ul>
+            <li>Built ITSM Catalog Items and Record Producers with dynamic variables, variable sets, UI Policies and Catalog Client Scripts, then delivered them through Service Portal.</li>
+            <li>Implemented Workflow and Flow Designer automation for approvals, task creation, routing, notifications and fulfilment against SLA targets.</li>
+            <li>Delivered HRSD case management, routing, assignment rules, SLAs and Agent Workspace, plus document template versioning with approval workflows.</li>
+            <li>Designed end-to-end CSM case management including case types, routing, SLAs and escalations.</li>
+            <li>Ran requirement sessions with clients, wrote technical specs, coordinated UAT and defect management, and mentored new team members.</li>
+          </ul>
+          <details class="more">
+            <summary>More from this role</summary>
+            <ul>
+              <li>Server and client validation using Business Rules, Script Includes, GlideAjax, Client Scripts and UI Policies to protect data integrity.</li>
+              <li>Advanced catalog behaviour: reference qualifiers, variable validation, dynamic defaults and dependent variables.</li>
+              <li>Data loading with Data Sources, Import Sets, Transform Maps and Transform Scripts; releases managed with Update Sets.</li>
+              <li>ITOM Discovery and Service Mapping for an accurate CMDB, and ITAM asset lifecycle workflows with licence reconciliation.</li>
+              <li>Custom reports and dashboards for delivery planning and stakeholder demos.</li>
+            </ul>
+          </details>
+        </div>
+      </article>
+
+      <article class="job">
+        <div class="when">10/2016 to 11/2018<b>Gurugram, India</b></div>
+        <div>
+          <h3>Software Developer II</h3>
+          <div class="co">Teleperformance</div>
+          <ul>
+            <li>Saved $25,000 a year by building in-house BI tools with React and Web API, removing a third-party dependency.</li>
+            <li>Cut application load times by 40% through performance work.</li>
+            <li>Managed source control in GitHub: repositories, branching, merging and version control.</li>
+          </ul>
+          <div class="stack"><span class="tag">ASP.NET MVC</span><span class="tag">ReactJS</span><span class="tag">SQL Server</span></div>
+        </div>
+      </article>
+
+      <article class="job">
+        <div class="when">05/2015 to 09/2016<b>Noida, India</b></div>
+        <div>
+          <h3>Software Developer II</h3>
+          <div class="co">VibeTech India</div>
+          <ul>
+            <li>Built 15+ responsive real estate websites and mobile apps for the Australian market.</li>
+            <li>Lifted system efficiency by 30% with code optimisation and automated testing across 5 projects.</li>
+            <li>Contributed to a codebase of more than 100,000 lines.</li>
+          </ul>
+          <div class="stack"><span class="tag">ASP.NET</span><span class="tag">AngularJS</span><span class="tag">JavaScript</span><span class="tag">Cordova</span></div>
+        </div>
+      </article>
+
+      <article class="job">
+        <div class="when">01/2014 to 01/2015<b>Karnal, India</b></div>
+        <div>
+          <h3>Associate Software Engineer</h3>
+          <div class="co">DM BrainHub InfoTech</div>
+          <ul>
+            <li>Raised client retention by 25% through better customer feedback loops.</li>
+            <li>Redesigned the UI/UX and brought defects down by 30% with stricter testing.</li>
+            <li>Wrote SQL Server stored procedures and indexes, and tuned query performance.</li>
+          </ul>
+          <div class="stack"><span class="tag">ASP.NET</span><span class="tag">jQuery</span><span class="tag">SQL Server</span></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="sec-head">
+      <span class="table mono">Skills</span>
+      <h2>The toolkit</h2>
+    </div>
+    <div class="skills">
+      <div class="skill"><span class="n">01</span><div><h3>ServiceNow platform</h3><div class="tags"><span class="tag">ITSM</span><span class="tag">HRSD</span><span class="tag">CSM</span><span class="tag">ITOM</span><span class="tag">ITAM</span></div></div></div>
+      <div class="skill"><span class="n">02</span><div><h3>Development</h3><div class="tags"><span class="tag">JavaScript</span><span class="tag">Glide scripting</span><span class="tag">Business Rules</span><span class="tag">Client Scripts</span><span class="tag">Script Includes</span><span class="tag">UI Actions</span><span class="tag">GlideAjax</span></div></div></div>
+      <div class="skill"><span class="n">03</span><div><h3>Catalog &amp; Service Portal</h3><div class="tags"><span class="tag hot">Service Portal</span><span class="tag">Widgets</span><span class="tag">Catalog Items</span><span class="tag">Record Producers</span><span class="tag">Order Guides</span><span class="tag">Variable sets</span><span class="tag">Reference qualifiers</span></div></div></div>
+      <div class="skill"><span class="n">04</span><div><h3>Automation</h3><div class="tags"><span class="tag">Flow Designer</span><span class="tag">Legacy Workflow</span><span class="tag">Approvals</span><span class="tag">Routing</span><span class="tag">Notifications</span></div></div></div>
+      <div class="skill"><span class="n">05</span><div><h3>Security &amp; governance</h3><div class="tags"><span class="tag">ACLs</span><span class="tag">HR Criteria</span><span class="tag">Roles</span><span class="tag">Data separation</span><span class="tag">Scoped apps</span></div></div></div>
+      <div class="skill"><span class="n">06</span><div><h3>Data &amp; administration</h3><div class="tags"><span class="tag">Import Sets</span><span class="tag">Transform Maps</span><span class="tag">Update Sets</span><span class="tag">Plugins</span><span class="tag">Clones</span></div></div></div>
+      <div class="skill"><span class="n">07</span><div><h3>Reporting &amp; delivery</h3><div class="tags"><span class="tag">Dashboards</span><span class="tag">Custom reports</span><span class="tag">Agile/Scrum</span><span class="tag">UAT</span><span class="tag">Defect management</span></div></div></div>
+      <div class="skill"><span class="n">08</span><div><h3>Wider engineering</h3><div class="tags"><span class="tag">ASP.NET</span><span class="tag">React</span><span class="tag">AngularJS</span><span class="tag">SQL Server</span><span class="tag">GitHub</span></div></div></div>
+    </div>
+  </section>
+
+  <section id="certifications">
+    <div class="sec-head">
+      <span class="table mono">Certifications</span>
+      <h2>Certified across admin, development and ITSM</h2>
+    </div>
+    <div class="certs">
+      <div class="cert"><div class="abbr">CSA</div><div class="full">Certified System Administrator</div><span class="ok mono">✓ ServiceNow certified</span></div>
+      <div class="cert"><div class="abbr">CAD</div><div class="full">Certified Application Developer</div><span class="ok mono">✓ ServiceNow certified</span></div>
+      <div class="cert"><div class="abbr">CIS-ITSM</div><div class="full">Certified Implementation Specialist, IT Service Management</div><span class="ok mono">✓ ServiceNow certified</span></div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="sec-head">
+      <span class="table mono">Education</span>
+      <h2>Study</h2>
+    </div>
+    <div class="edu">
+      <div class="mod"><span class="code">2025 to 2026</span><h3>Master of Information Technology and Systems</h3><p>Major in AI/ML · University of Canberra, Australia</p></div>
+      <div class="mod"><span class="code">2010 to 2014</span><h3>Bachelor of Technology, Information Technology</h3><p>Kurukshetra University, India</p></div>
+    </div>
+  </section>
+
+  <section id="contact" style="padding-top:0">
+    <div class="contact">
+      <div>
+        <h2>Need a ServiceNow developer who ships?</h2>
+        <p>Whether it's a new HRSD rollout, a catalog and portal clean-up or a tricky Flow Designer build, I'm happy to talk it through. Based in Canberra and open to permanent, contract and consulting work.</p>
+      </div>
+      <div class="cards">
+        <div class="cline"><div><label>Email</label><a href="mailto:mail2sandeepkaushik@gmail.com">mail2sandeepkaushik@gmail.com</a></div><button class="copy" type="button" id="copy-email" data-copy="mail2sandeepkaushik@gmail.com">Copy</button></div>
+        <div class="cline"><div><label>Phone</label><a href="tel:+61426126649">+61 426 126 649</a></div><button class="copy" type="button" id="copy-phone" data-copy="+61 426 126 649">Copy</button></div>
+        <div class="cline"><div><label>Location</label><span class="v">Canberra, ACT, Australia</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Sandeep Kumar</span>
+    <span class="mono">Senior ServiceNow Developer · Canberra</span>
+  </footer>
+</main>
+
+<script>
+document.querySelectorAll('.copy').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var text = b.getAttribute('data-copy');
+    var done = function (msg) { b.textContent = msg; setTimeout(function () { b.textContent = 'Copy'; }, 1600); };
+    try {
+      navigator.clipboard.writeText(text).then(function () { done('Copied'); }, function () { done('Select to copy'); });
+    } catch (e) { done('Select to copy'); }
+  });
+});
+</script>
+</body>
+</html>
